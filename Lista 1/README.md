@@ -1,4 +1,3 @@
-
 # Lista 1 - Revisão de Física Computacional 2
 **Disciplina:** Física Computacional 2 (92444-B)  
 **Professor:** Matheus Paes Lima  
@@ -82,3 +81,4 @@ Esta lista tem como objetivo revisar conceitos fundamentais de programação em 
 - Implementar equações de Lotka-Volterra com método de Euler.
 - Analisar evolução das populações e condições para extinção.
 
+---
