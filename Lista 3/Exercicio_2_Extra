@@ -1,0 +1,93 @@
+#Bônus - Aqui eu fiz porque deu vontade mesmo KKKKKK
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+class Planetas:
+    def __init__(self, nome, R_P, T_P, cor):
+        self.nome = nome
+        self.R_P = R_P
+        self.T_P = T_P
+        self.V_P = (2 * np.pi * R_P) / T_P  # Velocidade inicial aproximada
+        self.cor = cor
+        self.orbita = None
+
+    def simular_orbita(self, dt):
+        print(f"Simulando a órbita de {self.nome}...")
+        t, RK4_graph = Simular(self.T_P, dt, 4, self.R_P, self.V_P)
+        self.orbita = RK4_graph
+
+def rk4(y, t, dt, ndim):
+    c1 = dt * g(y, t, ndim)
+    c2 = dt * g(y + c1 / 2, t + dt / 2, ndim)
+    c3 = dt * g(y + c2 / 2, t + dt / 2, ndim)
+    c4 = dt * g(y + c3, t + dt, ndim)
+    return y + (c1 + 2 * c2 + 2 * c3 + c4) / 6
+
+def g(y, t, ndim):
+    G, M = 6.67430e-11, 1.989e30  # Constante gravitacional e massa do Sol
+
+    g = np.zeros(ndim)
+    r = np.sqrt(y[0]**2 + y[1]**2)
+
+    g[0] = y[2]  # dx/dt = vx
+    g[1] = y[3]  # dy/dt = vy
+    g[2] = -G * M * y[0] / r**3  # Força gravitacional em x
+    g[3] = -G * M * y[1] / r**3  # Força gravitacional em y
+    return g
+
+def Simular(tmax, dt, ndim, R_P, V_P):
+    Nt = int(tmax / dt)
+
+    t = [0.0]
+    y_rk4 = [np.array([R_P, 0.0, 0.0, V_P])]
+    for i in range(Nt - 1):
+        t.append(t[i] + dt)
+        y_rk4.append(rk4(y_rk4[i], t[i], dt, ndim))
+
+    XX_rk4 = [y_rk4[i][0] for i in range(Nt)]
+    YY_rk4 = [y_rk4[i][1] for i in range(Nt)]
+
+    RK4 = [XX_rk4, YY_rk4]
+
+    return t, RK4
+
+def main():
+    print("Muito legal ver as falhas no modelo considerando só a gravitação em função do Sol e não considerando a relatividade KKKKKKK")
+    # Definindo os planetas
+    AU = 1.496e11
+    planetas = [
+        Planetas("Mercúrio", 0.39 * AU, 0.24 * 365.25 * 24 * 60 * 60, 'gray'),
+        Planetas("Vênus", 0.72 * AU, 0.615 * 365.25 * 24 * 60 * 60, 'yellow'),
+        Planetas("Terra", 1.0 * AU, 1.0 * 365.25 * 24 * 60 * 60, 'blue'),
+        Planetas("Marte", 1.52 * AU, 1.88 * 365.25 * 24 * 60 * 60, 'red'),
+        Planetas("Júpiter", 5.2 * AU, 11.86 * 365.25 * 24 * 60 * 60, 'orange'),
+        Planetas("Saturno", 9.58 * AU, 29.46 * 365.25 * 24 * 60 * 60, 'gold'),
+        Planetas("Urano", 19.22 * AU, 84.01 * 365.25 * 24 * 60 * 60, 'lightblue'),
+        Planetas("Netuno", 30.05 * AU, 164.8 * 365.25 * 24 * 60 * 60, 'darkblue'),
+    ] 
+
+    # Simulando as órbitas dos planetas
+    for planeta in planetas:
+        dt = planeta.T_P * 10**-4
+        planeta.simular_orbita(dt)
+
+    # Plotando as órbitas dos planetas
+    plt.figure(figsize=(10, 10))
+    for planeta in planetas:
+        plt.plot(planeta.orbita[0], planeta.orbita[1], label=f'Órbita de {planeta.nome}', color=planeta.cor)
+
+    # Plotando o Sol no centro
+    plt.scatter(0, 0, color="orange", label="Sol", s=50)
+
+    plt.xlabel('x (m)')
+    plt.ylabel('y (m)')
+    plt.title("Órbitas dos Planetas do Sistema Solar ao redor do Sol (RK4)")
+    plt.legend()
+    plt.grid()
+    plt.axis('equal')
+    plt.show()
+
+
+if __name__ == '__main__':
+    main()

@@ -5,7 +5,7 @@
 **Professor:** Matheus Paes Lima  
 **Período:** 2º semestre de 2024  
 
-Esta lista aborda a resolução numérica de **equações diferenciais ordinárias (EDOs)** utilizando **Python 3**. O objetivo é implementar métodos numéricos, como **Euler** e **Picard**, para resolver problemas clássicos da física e matemática. Recomenda-se utilizar **Google Colab** para execução.
+Esta lista aborda a resolução numérica de **equações diferenciais ordinárias (EDOs)** utilizando **Python 3**. O objetivo é implementar métodos numéricos, como **Euler** e **Picard**, para resolver problemas clássicos da física e matemática. 
 
 ---
 
